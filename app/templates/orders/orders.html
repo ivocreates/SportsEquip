@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}My Orders - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-primary mb-4">
+                <i class="fas fa-list-alt me-2"></i>My Orders
+            </h1>
+        </div>
+    </div>
+    
+    {% if orders %}
+    <div class="row">
+        <div class="col">
+            {% for order in orders %}
+            <div class="order-card">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <strong>Order #{{ order.id }}</strong>
+                        <br>
+                        <small class="text-muted">{{ order.created_at.strftime('%b %d, %Y') }}</small>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="mb-1">{{ order.order_items|length }} item(s)</h6>
+                        <small class="text-muted">
+                            {% for item in order.order_items[:2] %}
+                                {{ item.product.name }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                            {% if order.order_items|length > 2 %}
+                                and {{ order.order_items|length - 2 }} more...
+                            {% endif %}
+                        </small>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <strong>₹{{ "%.2f"|format(order.total_amount) }}</strong>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <span class="order-status status-{{ order.status }}">
+                            {{ order.status.title() }}
+                        </span>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <button class="btn btn-outline-primary btn-sm" 
+                                type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#order-details-{{ order.id }}">
+                            <i class="fas fa-eye me-1"></i>View Details
+                        </button>
+                        {% if order.status == 'delivered' %}
+                        <button class="btn btn-outline-secondary btn-sm ms-2">
+                            <i class="fas fa-redo me-1"></i>Reorder
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Order Details Collapse -->
+                <div class="collapse mt-3" id="order-details-{{ order.id }}">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6>Order Items:</h6>
+                            {% for item in order.order_items %}
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ item.product.image_url if item.product.image_url != 'default-product.jpg' else url_for('static', filename='images/default-product.jpg') }}" 
+                                     alt="{{ item.product.name }}" 
+                                     class="me-3 rounded"
+                                     style="width: 50px; height: 50px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold">{{ item.product.name }}</div>
+                                    <small class="text-muted">Quantity: {{ item.quantity }} × ₹{{ "%.2f"|format(item.price) }}</small>
+                                </div>
+                                <div class="text-end">
+                                    <strong>₹{{ "%.2f"|format(item.price * item.quantity) }}</strong>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Order Summary:</h6>
+                            <div class="d-flex justify-content-between">
+                                <span>Subtotal:</span>
+                                <span>₹{{ "%.2f"|format(order.total_amount) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Shipping:</span>
+                                <span class="text-success">FREE</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Tax:</span>
+                                <span>₹{{ "%.2f"|format(order.total_amount * 0.08) }}</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Total:</span>
+                                <span>₹{{ "%.2f"|format(order.total_amount + (order.total_amount * 0.08)) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% else %}
+    <!-- No Orders -->
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-shopping-bag fa-4x text-muted"></i>
+        </div>
+        <h3 class="text-muted mb-3">No orders yet</h3>
+        <p class="text-muted mb-4">You haven't placed any orders yet. Start shopping to see your orders here.</p>
+        <a href="{{ url_for('main.products') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

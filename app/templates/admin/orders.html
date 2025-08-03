@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Orders - Admin - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-primary mb-4">
+                <i class="fas fa-list-alt me-2"></i>Manage Orders
+            </h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.admin_dashboard') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Orders</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Filter Bar -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="btn-group" role="group">
+                <a href="{{ url_for('main.admin_orders') }}" class="btn btn-outline-primary">All Orders</a>
+                <a href="{{ url_for('main.admin_orders') }}?status=pending" class="btn btn-outline-warning">Pending</a>
+                <a href="{{ url_for('main.admin_orders') }}?status=confirmed" class="btn btn-outline-info">Confirmed</a>
+                <a href="{{ url_for('main.admin_orders') }}?status=shipped" class="btn btn-outline-secondary">Shipped</a>
+                <a href="{{ url_for('main.admin_orders') }}?status=delivered" class="btn btn-outline-success">Delivered</a>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <span class="text-muted">Total: {{ orders.total }} orders</span>
+        </div>
+    </div>
+    
+    <!-- Orders Table -->
+    <div class="card">
+        <div class="card-body">
+            {% if orders.items %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders.items %}
+                        <tr>
+                            <td><strong>#{{ order.id }}</strong></td>
+                            <td>
+                                <div class="fw-semibold">{{ order.user.username }}</div>
+                                <small class="text-muted">{{ order.user.email }}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark">{{ order.order_items|length }} items</span>
+                                <br>
+                                <small class="text-muted">
+                                    {% for item in order.order_items[:2] %}
+                                        {{ item.product.name }}{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                    {% if order.order_items|length > 2 %}...{% endif %}
+                                </small>
+                            </td>
+                            <td><strong>₹{{ "%.2f"|format(order.total_amount) }}</strong></td>
+                            <td>
+                                <span class="order-status status-{{ order.status }}" id="status-{{ order.id }}">
+                                    {{ order.status.title() }}
+                                </span>
+                            </td>
+                            <td>
+                                <div>{{ order.created_at.strftime('%b %d, %Y') }}</div>
+                                <small class="text-muted">{{ order.created_at.strftime('%I:%M %p') }}</small>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary" 
+                                            type="button" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#order-details-{{ order.id }}"
+                                            title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" 
+                                                type="button" 
+                                                data-bs-toggle="dropdown"
+                                                title="Update Status">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><h6 class="dropdown-header">Update Status</h6></li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('main.admin_update_order_status', id=order.id) }}" class="d-inline">
+                                                    <input type="hidden" name="status" value="confirmed">
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="fas fa-check-circle text-info me-2"></i>Mark Confirmed
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('main.admin_update_order_status', id=order.id) }}" class="d-inline">
+                                                    <input type="hidden" name="status" value="shipped">
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="fas fa-shipping-fast text-secondary me-2"></i>Mark Shipped
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('main.admin_update_order_status', id=order.id) }}" class="d-inline">
+                                                    <input type="hidden" name="status" value="delivered">
+                                                    <button type="submit" class="dropdown-item">
+                                                        <i class="fas fa-check-double text-success me-2"></i>Mark Delivered
+                                                    </button>
+                                                </form>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <form method="POST" action="{{ url_for('main.admin_update_order_status', id=order.id) }}" class="d-inline">
+                                                    <input type="hidden" name="status" value="cancelled">
+                                                    <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to cancel this order?')">
+                                                        <i class="fas fa-times-circle me-2"></i>Cancel Order
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Order Details Collapse -->
+                        <tr>
+                            <td colspan="7" class="p-0">
+                                <div class="collapse" id="order-details-{{ order.id }}">
+                                    <div class="p-3 bg-light">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h6>Order Items:</h6>
+                                                {% for item in order.order_items %}
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <img src="{{ item.product.image_url if item.product.image_url != 'default-product.jpg' else url_for('static', filename='images/default-product.jpg') }}" 
+                                                         alt="{{ item.product.name }}" 
+                                                         class="me-3 rounded"
+                                                         style="width: 40px; height: 40px; object-fit: cover;">
+                                                    <div class="flex-grow-1">
+                                                        <div class="fw-semibold">{{ item.product.name }}</div>
+                                                        <small class="text-muted">{{ item.quantity }} × ₹{{ "%.2f"|format(item.price) }}</small>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <strong>₹{{ "%.2f"|format(item.price * item.quantity) }}</strong>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h6>Order Summary:</h6>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Subtotal:</span>
+                                                    <span>₹{{ "%.2f"|format(order.total_amount) }}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Tax:</span>
+                                                    <span>₹{{ "%.2f"|format(order.total_amount * 0.08) }}</span>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Shipping:</span>
+                                                    <span class="text-success">FREE</span>
+                                                </div>
+                                                <hr>
+                                                <div class="d-flex justify-content-between fw-bold">
+                                                    <span>Total:</span>
+                                                    <span>₹{{ "%.2f"|format(order.total_amount + (order.total_amount * 0.08)) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            {% if orders.pages > 1 %}
+            <div class="d-flex justify-content-center mt-4">
+                <nav>
+                    <ul class="pagination">
+                        {% if orders.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('main.admin_orders', page=orders.prev_num) }}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        
+                        {% for page_num in orders.iter_pages() %}
+                            {% if page_num %}
+                                {% if page_num != orders.page %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('main.admin_orders', page=page_num) }}">
+                                            {{ page_num }}
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ page_num }}</span>
+                                    </li>
+                                {% endif %}
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if orders.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('main.admin_orders', page=orders.next_num) }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <!-- No Orders -->
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                <h5 class="text-muted">No orders found</h5>
+                <p class="text-muted">Orders will appear here when customers start purchasing.</p>
+                <a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

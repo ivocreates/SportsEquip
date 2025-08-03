@@ -1,0 +1,14 @@
+<!-- SVG placeholder for default product image -->
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="300" fill="#BCA88D"/>
+  <rect x="25" y="25" width="250" height="250" fill="#F1F0E4" stroke="#7D8D86" stroke-width="2"/>
+  <text x="150" y="140" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#3E3F29">
+    Product Image
+  </text>
+  <text x="150" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#7D8D86">
+    No Image Available
+  </text>
+  <circle cx="150" cy="100" r="25" fill="none" stroke="#7D8D86" stroke-width="2"/>
+  <circle cx="150" cy="100" r="5" fill="#7D8D86"/>
+  <path d="M130 120 L150 100 L170 120 L190 100 L190 140 L110 140 L110 120 Z" fill="none" stroke="#7D8D86" stroke-width="2"/>
+</svg>

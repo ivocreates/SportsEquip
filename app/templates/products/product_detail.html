@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            <div class="product-image-container">
+                <img src="{{ product.image_url if product.image_url != 'default-product.jpg' else url_for('static', filename='images/default-product.jpg') }}" 
+                     class="img-fluid rounded shadow" 
+                     alt="{{ product.name }}"
+                     style="width: 100%; max-height: 500px; object-fit: cover;">
+            </div>
+        </div>
+        
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <div class="product-details">
+                <span class="product-category mb-2">{{ product.category.title() }}</span>
+                <h1 class="text-primary mb-3">{{ product.name }}</h1>
+                
+                <!-- Rating -->
+                <div class="rating mb-3">
+                    {% set avg_rating = product.average_rating %}
+                    {% for i in range(5) %}
+                        <i class="fas fa-star {{ 'text-warning' if i < avg_rating else 'text-muted' }}"></i>
+                    {% endfor %}
+                    <span class="ms-2">{{ "%.1f"|format(avg_rating) }} out of 5</span>
+                    <small class="text-muted">({{ product.reviews|length }} reviews)</small>
+                </div>
+                
+                <!-- Price -->
+                <div class="price-section mb-4">
+                    <h3 class="text-primary mb-0">₹{{ "%.2f"|format(product.price) }}</h3>
+                </div>
+                
+                <!-- Stock Status -->
+                <div class="stock-status mb-4">
+                    {% if product.stock_quantity > 0 %}
+                        {% if product.stock_quantity >= 10 %}
+                            <span class="badge bg-success">In Stock ({{ product.stock_quantity }} available)</span>
+                        {% else %}
+                            <span class="badge bg-warning">Limited Stock ({{ product.stock_quantity }} left)</span>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge bg-danger">Out of Stock</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Add to Cart Form -->
+                {% if current_user.is_authenticated and product.stock_quantity > 0 %}
+                <form method="POST" action="{{ url_for('main.add_to_cart') }}" class="mb-4">
+                    <input type="hidden" name="product_id" value="{{ product.id }}">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" 
+                                   value="1" min="1" max="{{ product.stock_quantity }}">
+                        </div>
+                        <div class="col-md-8">
+                            <button type="submit" class="btn btn-primary btn-lg me-2">
+                                <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            </button>
+                            <a href="{{ url_for('main.add_to_wishlist', product_id=product.id) }}" 
+                               class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-heart me-2"></i>Wishlist
+                            </a>
+                        </div>
+                    </div>
+                </form>
+                {% elif not current_user.is_authenticated %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <a href="{{ url_for('main.login') }}" class="alert-link">Login</a> to purchase this item.
+                </div>
+                {% endif %}
+                
+                <!-- Product Description -->
+                <div class="product-description">
+                    <h5>Description</h5>
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Details Tabs -->
+    <div class="row mt-5">
+        <div class="col">
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="reviews-tab" data-bs-toggle="tab" 
+                            data-bs-target="#reviews" type="button" role="tab">
+                        Reviews ({{ product.reviews|length }})
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="specifications-tab" data-bs-toggle="tab" 
+                            data-bs-target="#specifications" type="button" role="tab">
+                        Specifications
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="productTabsContent">
+                <!-- Reviews Tab -->
+                <div class="tab-pane fade show active" id="reviews" role="tabpanel">
+                    <div class="py-4">
+                        <!-- Add Review Form -->
+                        {% if current_user.is_authenticated %}
+                        <div class="mb-4">
+                            <h5>Write a Review</h5>
+                            <form method="POST" action="{{ url_for('main.add_review') }}">
+                                {{ form.hidden_tag() }}
+                                {{ form.product_id(value=product.id) }}
+                                
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            {{ form.rating.label(class="form-label") }}
+                                            {{ form.rating(class="form-select") }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-3">
+                                            {{ form.comment.label(class="form-label") }}
+                                            {{ form.comment(class="form-control", rows="3") }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-star me-2"></i>Submit Review
+                                </button>
+                            </form>
+                        </div>
+                        <hr>
+                        {% endif %}
+                        
+                        <!-- Existing Reviews -->
+                        {% if reviews %}
+                            {% for review in reviews %}
+                            <div class="review-item border-bottom py-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <strong>{{ review.user.username }}</strong>
+                                        <div class="rating">
+                                            {% for i in range(5) %}
+                                                <i class="fas fa-star {{ 'text-warning' if i < review.rating else 'text-muted' }} small"></i>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">{{ review.created_at.strftime('%B %d, %Y') }}</small>
+                                </div>
+                                {% if review.comment %}
+                                <p class="mb-0">{{ review.comment }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Specifications Tab -->
+                <div class="tab-pane fade" id="specifications" role="tabpanel">
+                    <div class="py-4">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Category</strong></td>
+                                    <td>{{ product.category.title() }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Price</strong></td>
+                                    <td>₹{{ "%.2f"|format(product.price) }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stock Quantity</strong></td>
+                                    <td>{{ product.stock_quantity }}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Added Date</strong></td>
+                                    <td>{{ product.created_at.strftime('%B %d, %Y') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Related Products -->
+    <div class="row mt-5">
+        <div class="col">
+            <h3 class="text-primary mb-4">Related Products</h3>
+            <div class="row g-4">
+                <!-- This would typically show products from the same category -->
+                <!-- For now, showing a placeholder -->
+                <div class="col-12">
+                    <p class="text-muted">Related products will be displayed here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

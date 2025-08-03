@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}SpEquip - Your Sports Equipment Store{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">Gear Up for Victory</h1>
+                <p class="lead">Discover premium sports equipment for every athlete. From beginners to professionals, we have everything you need to excel in your sport.</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('main.products') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-shopping-bag me-2"></i>Shop Now
+                    </a>
+                    <a href="#featured" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-star me-2"></i>Featured Products
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="{{ url_for('static', filename='images/hero-sports.jpg') }}" 
+                     alt="Sports Equipment" 
+                     class="img-fluid rounded"
+                     style="max-height: 400px; width: 100%; object-fit: cover;"
+                     onerror="this.src='https://via.placeholder.com/600x400/7D8D86/FFFFFF?text=Sports+Equipment'">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="display-5 fw-bold" style="color: var(--primary-color);">Shop by Category</h2>
+                <p class="lead">Find the perfect equipment for your favorite sport</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card text-center p-4 h-100">
+                    <i class="fas fa-football-ball fa-3x mb-3" style="color: var(--secondary-color);"></i>
+                    <h5>Football</h5>
+                    <p>Helmets, pads, cleats and more</p>
+                    <a href="{{ url_for('main.products', category='football') }}" class="btn btn-outline-primary">Shop Football</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card text-center p-4 h-100">
+                    <i class="fas fa-basketball-ball fa-3x mb-3" style="color: var(--secondary-color);"></i>
+                    <h5>Basketball</h5>
+                    <p>Balls, hoops, shoes and gear</p>
+                    <a href="{{ url_for('main.products', category='basketball') }}" class="btn btn-outline-primary">Shop Basketball</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card text-center p-4 h-100">
+                    <i class="fas fa-table-tennis fa-3x mb-3" style="color: var(--secondary-color);"></i>
+                    <h5>Tennis</h5>
+                    <p>Rackets, balls, nets and more</p>
+                    <a href="{{ url_for('main.products', category='tennis') }}" class="btn btn-outline-primary">Shop Tennis</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="category-card text-center p-4 h-100">
+                    <i class="fas fa-dumbbell fa-3x mb-3" style="color: var(--secondary-color);"></i>
+                    <h5>Fitness</h5>
+                    <p>Weights, machines, accessories</p>
+                    <a href="{{ url_for('main.products', category='fitness') }}" class="btn btn-outline-primary">Shop Fitness</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="py-5" id="featured" style="background-color: var(--background-color);">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="display-5 fw-bold" style="color: var(--primary-color);">Featured Products</h2>
+                <p class="lead">Handpicked equipment from top brands</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="product-card h-100">
+                    <img src="{{ product.image_url if product.image_url != 'default-product.jpg' else url_for('static', filename='images/default-product.jpg') }}" 
+                         class="card-img-top" 
+                         alt="{{ product.name }}"
+                         onerror="this.src='{{ url_for('static', filename='images/default-product.jpg') }}'">
+                    <div class="product-card-body">
+                        <span class="product-category">{{ product.category.title() }}</span>
+                        <h5 class="product-title">{{ product.name }}</h5>
+                        <div class="rating mb-2">
+                            {% set avg_rating = product.average_rating %}
+                            {% for i in range(5) %}
+                                <i class="fas fa-star {{ 'text-warning' if i < avg_rating else 'text-muted' }}"></i>
+                            {% endfor %}
+                            <small class="text-muted">({{ product.reviews|length }} reviews)</small>
+                        </div>
+                        <p class="product-price">₹{{ "%.2f"|format(product.price) }}</p>
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('main.product_detail', id=product.id) }}" class="btn btn-primary flex-fill">
+                                <i class="fas fa-eye me-1"></i>View Details
+                            </a>
+                            {% if current_user.is_authenticated %}
+                            <form method="POST" action="{{ url_for('main.add_to_cart') }}" class="d-inline">
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-outline-primary" 
+                                        {% if product.stock_quantity == 0 %}disabled{% endif %}>
+                                    <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        {% if product.stock_quantity == 0 %}
+                        <small class="text-danger d-block mt-2">Out of Stock</small>
+                        {% elif product.stock_quantity < 10 %}
+                        <small class="text-warning d-block mt-2">Only {{ product.stock_quantity }} left!</small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{{ url_for('main.products') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-arrow-right me-2"></i>View All Products
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <div class="feature-item p-4">
+                    <i class="fas fa-shipping-fast fa-3x mb-3" style="color: var(--primary-color);"></i>
+                    <h5>Fast Shipping</h5>
+                    <p class="text-muted">Free shipping on orders over ₹2000</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="feature-item p-4">
+                    <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--primary-color);"></i>
+                    <h5>Secure Payment</h5>
+                    <p class="text-muted">Your payment information is safe</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="feature-item p-4">
+                    <i class="fas fa-undo fa-3x mb-3" style="color: var(--primary-color);"></i>
+                    <h5>Easy Returns</h5>
+                    <p class="text-muted">30-day return policy</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="feature-item p-4">
+                    <i class="fas fa-headset fa-3x mb-3" style="color: var(--primary-color);"></i>
+                    <h5>24/7 Support</h5>
+                    <p class="text-muted">Always here to help you</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5" style="background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); color: white;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3>Stay Updated</h3>
+                <p class="mb-0">Get the latest deals and product updates delivered to your inbox.</p>
+            </div>
+            <div class="col-md-6">
+                <form class="d-flex gap-2">
+                    <input type="email" class="form-control" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-light">
+                        <i class="fas fa-paper-plane"></i> Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.category-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.feature-item {
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-3px);
+}
+</style>
+{% endblock %}

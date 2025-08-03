@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-primary mb-4">
+                <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+            </h1>
+        </div>
+    </div>
+    
+    <!-- Dashboard Stats -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="dashboard-card bg-primary text-white">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ total_products }}</h3>
+                        <p class="mb-0">Total Products</p>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-box fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="dashboard-card bg-success text-white">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ total_orders }}</h3>
+                        <p class="mb-0">Total Orders</p>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-shopping-cart fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="dashboard-card bg-info text-white">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ total_users }}</h3>
+                        <p class="mb-0">Total Users</p>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-users fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="dashboard-card bg-warning text-white">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h3 class="mb-0">{{ pending_orders }}</h3>
+                        <p class="mb-0">Pending Orders</p>
+                    </div>
+                    <div class="ms-3">
+                        <i class="fas fa-clock fa-2x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="row mb-5">
+        <div class="col">
+            <h3 class="text-primary mb-3">Quick Actions</h3>
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <a href="{{ url_for('main.admin_add_product') }}" class="btn btn-primary w-100 p-3">
+                        <i class="fas fa-plus-circle fa-2x d-block mb-2"></i>
+                        Add New Product
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('main.admin_products') }}" class="btn btn-outline-primary w-100 p-3">
+                        <i class="fas fa-boxes fa-2x d-block mb-2"></i>
+                        Manage Products
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('main.admin_orders') }}" class="btn btn-outline-primary w-100 p-3">
+                        <i class="fas fa-list-alt fa-2x d-block mb-2"></i>
+                        Manage Orders
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="{{ url_for('main.products') }}" class="btn btn-outline-primary w-100 p-3">
+                        <i class="fas fa-eye fa-2x d-block mb-2"></i>
+                        View Store
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Orders -->
+    <div class="row">
+        <div class="col">
+            <h3 class="text-primary mb-3">Recent Orders</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% if recent_orders %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td><strong>#{{ order.id }}</strong></td>
+                                    <td>{{ order.user.username }}</td>
+                                    <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+                                    <td>
+                                        <span class="badge status-{{ order.status }}">
+                                            {{ order.status.title() }}
+                                        </span>
+                                    </td>
+                                    <td>{{ order.created_at.strftime('%b %d, %Y') }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" 
+                                                        type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#" onclick="updateOrderStatus({{ order.id }}, 'confirmed')">Mark Confirmed</a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="updateOrderStatus({{ order.id }}, 'shipped')">Mark Shipped</a></li>
+                                                    <li><a class="dropdown-item" href="#" onclick="updateOrderStatus({{ order.id }}, 'delivered')">Mark Delivered</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#" onclick="updateOrderStatus({{ order.id }}, 'cancelled')">Cancel Order</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('main.admin_orders') }}" class="btn btn-primary">
+                            View All Orders <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No orders yet</h5>
+                        <p class="text-muted">Orders will appear here when customers start purchasing.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateOrderStatus(orderId, status) {
+    if (confirm(`Are you sure you want to update this order status to "${status}"?`)) {
+        const formData = new FormData();
+        formData.append('status', status);
+        
+        fetch(`/admin/orders/${orderId}/update-status`, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                location.reload();
+            } else {
+                alert('Error updating order status');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error updating order status');
+        });
+    }
+}
+</script>
+
+<style>
+.dashboard-card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-3px);
+}
+
+.dashboard-card h3 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.bg-primary .dashboard-card h3,
+.bg-success .dashboard-card h3,
+.bg-info .dashboard-card h3,
+.bg-warning .dashboard-card h3 {
+    color: white !important;
+}
+
+.quick-action-card {
+    transition: transform 0.3s ease;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-3px);
+}
+</style>
+{% endblock %}

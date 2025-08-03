@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Shopping Cart - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-primary mb-4">
+                <i class="fas fa-shopping-cart me-2"></i>Shopping Cart
+            </h1>
+        </div>
+    </div>
+    
+    {% if cart_items %}
+    <div class="row">
+        <!-- Cart Items -->
+        <div class="col-lg-8">
+            {% for item in cart_items %}
+            <div class="cart-item mb-3">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <img src="{{ item.product.image_url if item.product.image_url != 'default-product.jpg' else url_for('static', filename='images/default-product.jpg') }}" 
+                             alt="{{ item.product.name }}" 
+                             class="img-fluid rounded">
+                    </div>
+                    <div class="col-md-4">
+                        <h6 class="mb-1">{{ item.product.name }}</h6>
+                        <small class="text-muted">{{ item.product.category.title() }}</small>
+                        <br>
+                        <small class="text-success">In Stock</small>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <div class="quantity-control">
+                            <label for="quantity-{{ item.id }}" class="form-label small">Quantity</label>
+                            <input type="number" 
+                                   class="form-control form-control-sm text-center" 
+                                   id="quantity-{{ item.id }}"
+                                   value="{{ item.quantity }}" 
+                                   min="1" 
+                                   max="{{ item.product.stock_quantity }}"
+                                   data-cart-id="{{ item.id }}">
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <strong>₹{{ "%.2f"|format(item.product.price) }}</strong>
+                        <br>
+                        <small class="text-muted">each</small>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <div class="item-total mb-2">
+                            <strong>₹{{ "%.2f"|format(item.product.price * item.quantity) }}</strong>
+                        </div>
+                        <a href="{{ url_for('main.remove_from_cart', id=item.id) }}" 
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Remove this item from cart?')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Cart Summary -->
+        <div class="col-lg-4">
+            <div class="cart-total sticky-top">
+                <h4 class="mb-4">Order Summary</h4>
+                
+                <div class="summary-row d-flex justify-content-between mb-2">
+                    <span>Subtotal ({{ cart_items|length }} items):</span>
+                    <span>₹{{ "%.2f"|format(total) }}</span>
+                </div>
+                
+                <div class="summary-row d-flex justify-content-between mb-2">
+                    <span>Shipping:</span>
+                    <span class="text-success">FREE</span>
+                </div>
+                
+                <div class="summary-row d-flex justify-content-between mb-2">
+                    <span>Tax:</span>
+                    <span>₹{{ "%.2f"|format(total * 0.08) }}</span>
+                </div>
+                
+                <hr>
+                
+                <div class="summary-row d-flex justify-content-between mb-4">
+                    <strong>Total:</strong>
+                    <strong class="text-primary">₹{{ "%.2f"|format(total + (total * 0.08)) }}</strong>
+                </div>
+                
+                <form method="POST" action="{{ url_for('main.checkout') }}">
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                        <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                    </button>
+                </form>
+                
+                <a href="{{ url_for('main.products') }}" class="btn btn-outline-primary w-100">
+                    <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                </a>
+                
+                <!-- Payment Methods -->
+                <div class="payment-methods mt-4">
+                    <h6 class="text-muted mb-3">We Accept:</h6>
+                    <div class="d-flex gap-2">
+                        <i class="fab fa-cc-visa fa-2x text-primary"></i>
+                        <i class="fab fa-cc-mastercard fa-2x text-warning"></i>
+                        <i class="fab fa-cc-amex fa-2x text-info"></i>
+                        <i class="fab fa-cc-paypal fa-2x text-primary"></i>
+                    </div>
+                </div>
+                
+                <!-- Security Badge -->
+                <div class="security-badge mt-4 text-center">
+                    <i class="fas fa-shield-alt text-success me-2"></i>
+                    <small class="text-muted">Secure 256-bit SSL encryption</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% else %}
+    <!-- Empty Cart -->
+    <div class="text-center py-5">
+        <div class="empty-cart-icon mb-4">
+            <i class="fas fa-shopping-cart fa-4x text-muted"></i>
+        </div>
+        <h3 class="text-muted mb-3">Your cart is empty</h3>
+        <p class="text-muted mb-4">Looks like you haven't added any items to your cart yet.</p>
+        <a href="{{ url_for('main.products') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-shopping-bag me-2"></i>Start Shopping
+        </a>
+    </div>
+    {% endif %}
+    
+    <!-- Cart Features -->
+    <div class="row mt-5 pt-5 border-top">
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+            <h5>Free Shipping</h5>
+            <p class="text-muted">On orders over ₹2000</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-undo fa-3x text-primary mb-3"></i>
+            <h5>Easy Returns</h5>
+            <p class="text-muted">30-day return policy</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+            <h5>24/7 Support</h5>
+            <p class="text-muted">Always here to help</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.cart-item {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.cart-total {
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.quantity-control input {
+    max-width: 80px;
+}
+
+.empty-cart-icon i {
+    opacity: 0.3;
+}
+
+.payment-methods i {
+    opacity: 0.7;
+}
+
+.summary-row {
+    padding: 5px 0;
+}
+</style>
+{% endblock %}

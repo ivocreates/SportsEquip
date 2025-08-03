@@ -1,0 +1,15 @@
+/* Placeholder CSS for default product image */
+.default-product-placeholder {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #BCA88D, #F1F0E4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3E3F29;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
+    border: 2px solid #7D8D86;
+    border-radius: 8px;
+}
