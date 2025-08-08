@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}Returns & Refunds - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Returns & Refunds</h1>
+            
+            <!-- Return Policy Overview -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Return Policy Overview</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-calendar-alt fa-3x text-primary mb-2"></i>
+                            <h5>30-Day Returns</h5>
+                            <p class="text-muted">Return items within 30 days of delivery</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-shipping-fast fa-3x text-primary mb-2"></i>
+                            <h5>Free Returns</h5>
+                            <p class="text-muted">Free return shipping on all orders</p>
+                        </div>
+                        <div class="col-md-4 text-center mb-3">
+                            <i class="fas fa-money-bill-wave fa-3x text-primary mb-2"></i>
+                            <h5>Full Refunds</h5>
+                            <p class="text-muted">100% money back guarantee</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return Process -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>How to Return an Item</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Online Returns</h5>
+                            <ol>
+                                <li>Log into your account</li>
+                                <li>Go to "My Orders"</li>
+                                <li>Find your order and click "Return Item"</li>
+                                <li>Select return reason</li>
+                                <li>Print the return label</li>
+                                <li>Pack the item and attach the label</li>
+                                <li>Drop off at any courier location</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Customer Service Returns</h5>
+                            <ol>
+                                <li>Call our customer service: +91 1800-123-4567</li>
+                                <li>Provide your order number</li>
+                                <li>Explain the return reason</li>
+                                <li>Receive return authorization</li>
+                                <li>Pack the item securely</li>
+                                <li>Schedule a pickup or drop off</li>
+                                <li>Track your return status</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return Conditions -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Return Conditions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>✅ Returnable Items</h5>
+                            <ul>
+                                <li>Unused items in original condition</li>
+                                <li>Items with original tags attached</li>
+                                <li>Items in original packaging</li>
+                                <li>Defective or damaged items</li>
+                                <li>Wrong items received</li>
+                                <li>Items not as described</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>❌ Non-Returnable Items</h5>
+                            <ul>
+                                <li>Used or worn items</li>
+                                <li>Items without original tags</li>
+                                <li>Personalized or customized items</li>
+                                <li>Swimwear and undergarments</li>
+                                <li>Items damaged by customer</li>
+                                <li>Gift cards and vouchers</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Refund Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Refund Information</h3>
+                </div>
+                <div class="card-body">
+                    <h5>Refund Timeline</h5>
+                    <ul>
+                        <li><strong>Processing:</strong> 2-3 business days after we receive your return</li>
+                        <li><strong>Credit/Debit Cards:</strong> 5-7 business days</li>
+                        <li><strong>UPI/Net Banking:</strong> 1-3 business days</li>
+                        <li><strong>Cash on Delivery:</strong> Bank transfer within 7-10 business days</li>
+                    </ul>
+
+                    <h5 class="mt-4">Refund Methods</h5>
+                    <ul>
+                        <li>Refunds are processed to the original payment method</li>
+                        <li>Store credit available for faster processing</li>
+                        <li>Exchange option available for size/color changes</li>
+                        <li>Gift card refunds processed as store credit</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Exchange Policy -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Exchange Policy</h3>
+                </div>
+                <div class="card-body">
+                    <h5>Size/Color Exchanges</h5>
+                    <ul>
+                        <li>Free exchanges within 30 days</li>
+                        <li>Subject to availability</li>
+                        <li>Price difference adjustments apply</li>
+                        <li>One exchange per item</li>
+                    </ul>
+
+                    <h5 class="mt-4">Defective Item Exchanges</h5>
+                    <ul>
+                        <li>Immediate exchange for defective items</li>
+                        <li>No questions asked policy</li>
+                        <li>Free expedited shipping on replacement</li>
+                        <li>Option for full refund if replacement unavailable</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Contact for Returns -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <h4>Need Help with Your Return?</h4>
+                    <p class="text-muted">Our customer service team is here to assist you</p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <p><strong>Phone:</strong><br>+91 1800-123-4567</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Email:</strong><br>returns@spequip.com</p>
+                        </div>
+                        <div class="col-md-4">
+                            <p><strong>Hours:</strong><br>Mon-Fri: 9 AM - 6 PM</p>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('main.contact_us') }}" class="btn btn-primary">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

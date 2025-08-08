@@ -21,11 +21,21 @@ def create_app():
     login_manager.login_message = 'Please log in to access this page.'
     
     # User loader for Flask-Login
-    from app.models import User
+    from app.models import User, CartItem
     
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+    
+    # Context processor for cart count
+    @app.context_processor
+    def inject_cart_count():
+        from flask_login import current_user
+        if current_user.is_authenticated:
+            cart_count = CartItem.query.filter_by(user_id=current_user.id).count()
+        else:
+            cart_count = 0
+        return dict(cart_count=cart_count)
     
     # Register blueprints
     from app.routes import main

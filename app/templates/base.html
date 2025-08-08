@@ -58,7 +58,7 @@
                             <a class="nav-link position-relative" href="{{ url_for('main.cart') }}">
                                 <i class="fas fa-shopping-cart me-1"></i>Cart
                                 <span class="badge bg-secondary cart-counter">
-                                    {{ current_user.cart_items|length if current_user.cart_items else 0 }}
+                                    {{ cart_count }}
                                 </span>
                             </a>
                         </li>
@@ -162,19 +162,19 @@
                 <div class="col-md-2 mb-4">
                     <h5>Support</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns</a></li>
+                        <li><a href="{{ url_for('main.help_center') }}">Help Center</a></li>
+                        <li><a href="{{ url_for('main.contact_us') }}">Contact Us</a></li>
+                        <li><a href="{{ url_for('main.shipping_info') }}">Shipping Info</a></li>
+                        <li><a href="{{ url_for('main.returns') }}">Returns</a></li>
                     </ul>
                 </div>
                 <div class="col-md-2 mb-4">
                     <h5>Company</h5>
                     <ul class="list-unstyled">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="{{ url_for('main.about_us') }}">About Us</a></li>
+                        <li><a href="{{ url_for('main.careers') }}">Careers</a></li>
+                        <li><a href="{{ url_for('main.privacy_policy') }}">Privacy Policy</a></li>
+                        <li><a href="{{ url_for('main.terms_of_service') }}">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Contact Us</h1>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-phone fa-3x text-primary mb-3"></i>
+                            <h4>Phone Support</h4>
+                            <p class="text-muted">Mon-Fri: 9:00 AM - 6:00 PM</p>
+                            <p><strong>+91 1800-123-4567</strong></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                            <h4>Email Support</h4>
+                            <p class="text-muted">We'll respond within 24 hours</p>
+                            <p><strong>support@spequip.com</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h3>Send us a Message</h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <select class="form-control" id="subject" required>
+                                <option value="">Select a topic</option>
+                                <option value="order">Order Issues</option>
+                                <option value="product">Product Questions</option>
+                                <option value="shipping">Shipping & Delivery</option>
+                                <option value="return">Returns & Refunds</option>
+                                <option value="technical">Technical Support</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" required placeholder="Please describe your question or concern..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Office Information -->
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <h4>Visit Our Store</h4>
+                    <address>
+                        <strong>SpEquip Headquarters</strong><br>
+                        123 Sports Complex Road<br>
+                        Mumbai, Maharashtra 400001<br>
+                        India
+                    </address>
+                </div>
+                <div class="col-md-6">
+                    <h4>Business Hours</h4>
+                    <ul class="list-unstyled">
+                        <li><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM</li>
+                        <li><strong>Saturday:</strong> 10:00 AM - 4:00 PM</li>
+                        <li><strong>Sunday:</strong> Closed</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

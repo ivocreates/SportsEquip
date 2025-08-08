@@ -86,8 +86,14 @@ function addToCart(productId, quantity) {
     })
     .then(response => response.text())
     .then(data => {
-        // Reload page to show updated cart
-        window.location.reload();
+        // Update cart counter
+        updateCartCounter();
+        // Show success message
+        showAlert('Item added to cart!', 'success');
+        // Small delay before reload to show the alert
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
     })
     .catch(error => {
         console.error('Error adding to cart:', error);
@@ -118,12 +124,24 @@ function updateCartItemQuantity(cartId, quantity) {
 }
 
 function updateCartCounter() {
-    // This would typically fetch from the server
-    const cartItems = document.querySelectorAll('.cart-item');
-    const counter = document.querySelector('.cart-counter');
-    if (counter) {
-        counter.textContent = cartItems.length;
-    }
+    // Fetch cart count from server
+    fetch('/cart-count')
+    .then(response => response.json())
+    .then(data => {
+        const counter = document.querySelector('.cart-counter');
+        if (counter) {
+            counter.textContent = data.count || 0;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching cart count:', error);
+        // Fallback: count visible cart items
+        const cartItems = document.querySelectorAll('.cart-item');
+        const counter = document.querySelector('.cart-counter');
+        if (counter) {
+            counter.textContent = cartItems.length;
+        }
+    });
 }
 
 // Search Functionality

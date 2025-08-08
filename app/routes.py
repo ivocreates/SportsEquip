@@ -134,6 +134,49 @@ def remove_from_cart(id):
         flash('Item removed from cart', 'success')
     return redirect(url_for('main.cart'))
 
+@main.route('/add-all-to-cart', methods=['POST'])
+@login_required
+def add_all_to_cart():
+    wishlist_items = Wishlist.query.filter_by(user_id=current_user.id).all()
+    
+    if not wishlist_items:
+        flash('Your wishlist is empty', 'warning')
+        return redirect(url_for('main.wishlist'))
+    
+    added_count = 0
+    for wishlist_item in wishlist_items:
+        product = wishlist_item.product
+        
+        # Check if product has stock
+        if product.stock_quantity > 0:
+            # Check if item already in cart
+            cart_item = CartItem.query.filter_by(user_id=current_user.id, product_id=product.id).first()
+            
+            if cart_item:
+                # Add 1 more to existing cart item if stock allows
+                if product.stock_quantity > cart_item.quantity:
+                    cart_item.quantity += 1
+                    added_count += 1
+            else:
+                # Add new item to cart
+                cart_item = CartItem(user_id=current_user.id, product_id=product.id, quantity=1)
+                db.session.add(cart_item)
+                added_count += 1
+    
+    if added_count > 0:
+        db.session.commit()
+        flash(f'{added_count} items added to cart from wishlist!', 'success')
+    else:
+        flash('No items could be added to cart (out of stock or already in cart)', 'warning')
+    
+    return redirect(url_for('main.wishlist'))
+
+@main.route('/cart-count')
+@login_required
+def cart_count():
+    count = CartItem.query.filter_by(user_id=current_user.id).count()
+    return jsonify({'count': count})
+
 # Order routes
 @main.route('/checkout', methods=['POST'])
 @login_required
@@ -381,3 +424,36 @@ def admin_update_order_status(id):
         flash('Order status updated successfully!', 'success')
     
     return redirect(url_for('main.admin_orders'))
+
+# Support and Company Pages
+@main.route('/help-center')
+def help_center():
+    return render_template('support/help_center.html')
+
+@main.route('/contact-us')
+def contact_us():
+    return render_template('support/contact_us.html')
+
+@main.route('/shipping-info')
+def shipping_info():
+    return render_template('support/shipping_info.html')
+
+@main.route('/returns')
+def returns():
+    return render_template('support/returns.html')
+
+@main.route('/about-us')
+def about_us():
+    return render_template('company/about_us.html')
+
+@main.route('/careers')
+def careers():
+    return render_template('company/careers.html')
+
+@main.route('/privacy-policy')
+def privacy_policy():
+    return render_template('company/privacy_policy.html')
+
+@main.route('/terms-of-service')
+def terms_of_service():
+    return render_template('company/terms_of_service.html')

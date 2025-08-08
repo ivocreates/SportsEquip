@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Shipping Information - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Shipping Information</h1>
+            
+            <!-- Shipping Methods -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Shipping Methods & Rates</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Shipping Method</th>
+                                    <th>Delivery Time</th>
+                                    <th>Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Standard Delivery</strong></td>
+                                    <td>5-7 business days</td>
+                                    <td>₹99 (Free for orders over ₹999)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Express Delivery</strong></td>
+                                    <td>2-3 business days</td>
+                                    <td>₹199</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Next Day Delivery</strong></td>
+                                    <td>1 business day</td>
+                                    <td>₹299 (Available in select cities)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Same Day Delivery</strong></td>
+                                    <td>Same day</td>
+                                    <td>₹399 (Mumbai & Delhi only)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Areas -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Delivery Areas</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Metro Cities</h5>
+                            <ul>
+                                <li>Mumbai</li>
+                                <li>Delhi NCR</li>
+                                <li>Bangalore</li>
+                                <li>Chennai</li>
+                                <li>Hyderabad</li>
+                                <li>Pune</li>
+                                <li>Kolkata</li>
+                                <li>Ahmedabad</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Coverage</h5>
+                            <ul>
+                                <li>All major cities and towns</li>
+                                <li>25,000+ PIN codes covered</li>
+                                <li>Cash on Delivery available in most areas</li>
+                                <li>Special delivery arrangements for remote areas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Policy -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Shipping Policy</h3>
+                </div>
+                <div class="card-body">
+                    <h5>Order Processing</h5>
+                    <ul>
+                        <li>Orders are processed Monday through Friday</li>
+                        <li>Orders placed before 2 PM are processed the same day</li>
+                        <li>Orders placed after 2 PM or on weekends are processed the next business day</li>
+                        <li>You'll receive a tracking number via email once your order ships</li>
+                    </ul>
+
+                    <h5 class="mt-4">Packaging</h5>
+                    <ul>
+                        <li>All items are carefully packed to prevent damage</li>
+                        <li>Fragile items receive extra protective packaging</li>
+                        <li>We use eco-friendly packaging materials whenever possible</li>
+                        <li>Discreet packaging available upon request</li>
+                    </ul>
+
+                    <h5 class="mt-4">Delivery Requirements</h5>
+                    <ul>
+                        <li>Someone must be present to receive the package</li>
+                        <li>Valid ID may be required for delivery</li>
+                        <li>Signature confirmation required for high-value items</li>
+                        <li>Delivery attempts: 3 times before return to warehouse</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Special Circumstances -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>Special Circumstances</h3>
+                </div>
+                <div class="card-body">
+                    <h5>Delayed Deliveries</h5>
+                    <p>Deliveries may be delayed due to:</p>
+                    <ul>
+                        <li>Weather conditions</li>
+                        <li>Natural disasters</li>
+                        <li>Government restrictions</li>
+                        <li>High demand periods (festivals, sales)</li>
+                    </ul>
+
+                    <h5 class="mt-4">Undeliverable Packages</h5>
+                    <p>If a package cannot be delivered:</p>
+                    <ul>
+                        <li>We'll attempt delivery 3 times</li>
+                        <li>SMS and email notifications will be sent</li>
+                        <li>Package will be held at local facility for 7 days</li>
+                        <li>After 7 days, package returns to our warehouse</li>
+                        <li>Return shipping charges may apply for re-delivery</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

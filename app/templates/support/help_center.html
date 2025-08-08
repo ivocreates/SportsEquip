@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Help Center - SpEquip{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="text-center mb-5">Help Center</h1>
+            
+            <!-- FAQ Section -->
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                            How do I place an order?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>To place an order:</p>
+                            <ol>
+                                <li>Browse our products and add items to your cart</li>
+                                <li>Click on the cart icon to review your items</li>
+                                <li>Click "Proceed to Checkout"</li>
+                                <li>Fill in your delivery information</li>
+                                <li>Choose your payment method and complete the order</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                            How do I track my order?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>You can track your order by:</p>
+                            <ul>
+                                <li>Logging into your account and visiting "My Orders"</li>
+                                <li>Using the order tracking number sent to your email</li>
+                                <li>Contacting our customer support team</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                            What payment methods do you accept?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>We accept the following payment methods:</p>
+                            <ul>
+                                <li>Credit Cards (Visa, MasterCard, American Express)</li>
+                                <li>Debit Cards</li>
+                                <li>UPI (Google Pay, PhonePe, Paytm)</li>
+                                <li>Net Banking</li>
+                                <li>Cash on Delivery (for select locations)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                            How do I create an account?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            <p>Creating an account is easy:</p>
+                            <ol>
+                                <li>Click "Register" in the top navigation</li>
+                                <li>Fill in your details (name, email, password)</li>
+                                <li>Verify your email address</li>
+                                <li>Start shopping!</li>
+                            </ol>
+                            <p>Benefits of having an account:</p>
+                            <ul>
+                                <li>Faster checkout</li>
+                                <li>Order tracking</li>
+                                <li>Wishlist functionality</li>
+                                <li>Exclusive offers and discounts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="card mt-5">
+                <div class="card-body text-center">
+                    <h4>Still need help?</h4>
+                    <p class="text-muted">Our customer support team is here to help you</p>
+                    <a href="{{ url_for('main.contact_us') }}" class="btn btn-primary">Contact Support</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

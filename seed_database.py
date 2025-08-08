@@ -66,7 +66,7 @@ def seed_database():
         db.session.commit()
         print("Users created successfully!")
         
-        # Create sample products
+        # Create sample products with real sports images
         products_data = [
             # Football
             {
@@ -74,7 +74,7 @@ def seed_database():
                 'description': 'High-quality football helmet with advanced protection technology. Features impact-resistant shell and comfortable padding.',
                 'price': 24899.17,  # ₹24,899 (converted from $299.99)
                 'category': 'football',
-                'image_url': 'https://via.placeholder.com/300x300/7D8D86/FFFFFF?text=Football+Helmet',
+                'image_url': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 25
             },
             {
@@ -82,7 +82,7 @@ def seed_database():
                 'description': 'Lightweight yet durable shoulder pads designed for maximum protection and mobility on the field.',
                 'price': 16599.17,  # ₹16,599 (converted from $199.99)
                 'category': 'football',
-                'image_url': 'https://via.placeholder.com/300x300/7D8D86/FFFFFF?text=Shoulder+Pads',
+                'image_url': 'https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 30
             },
             {
@@ -90,7 +90,7 @@ def seed_database():
                 'description': 'Official size and weight football used in professional games. Perfect for practice and games.',
                 'price': 4149.17,  # ₹4,149 (converted from $49.99)
                 'category': 'football',
-                'image_url': 'https://via.placeholder.com/300x300/7D8D86/FFFFFF?text=NFL+Football',
+                'image_url': 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 100
             },
             
@@ -100,7 +100,7 @@ def seed_database():
                 'description': 'Official size basketball with superior grip and durability. Perfect for indoor and outdoor play.',
                 'price': 3319.17,  # ₹3,319 (converted from $39.99)
                 'category': 'basketball',
-                'image_url': 'https://via.placeholder.com/300x300/BCA88D/FFFFFF?text=Basketball',
+                'image_url': 'https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 75
             },
             {
@@ -108,7 +108,7 @@ def seed_database():
                 'description': 'Adjustable height basketball hoop system perfect for backyard play. Easy assembly included.',
                 'price': 49799.17,  # ₹49,799 (converted from $599.99)
                 'category': 'basketball',
-                'image_url': 'https://via.placeholder.com/300x300/BCA88D/FFFFFF?text=Basketball+Hoop',
+                'image_url': 'https://images.unsplash.com/photo-1574623452334-1e0ac2b3ccb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 15
             },
             {
@@ -116,7 +116,7 @@ def seed_database():
                 'description': 'High-performance basketball shoes with excellent ankle support and traction for optimal court performance.',
                 'price': 12449.17,  # ₹12,449 (converted from $149.99)
                 'category': 'basketball',
-                'image_url': 'https://via.placeholder.com/300x300/BCA88D/FFFFFF?text=Basketball+Shoes',
+                'image_url': 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 50
             },
             
@@ -126,7 +126,7 @@ def seed_database():
                 'description': 'Lightweight carbon fiber tennis racket with perfect balance for power and control.',
                 'price': 16599.17,  # ₹16,599 (converted from $199.99)
                 'category': 'tennis',
-                'image_url': 'https://via.placeholder.com/300x300/3E3F29/FFFFFF?text=Tennis+Racket',
+                'image_url': 'https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 40
             },
             {
@@ -134,7 +134,7 @@ def seed_database():
                 'description': 'Professional grade tennis balls with consistent bounce and durability. Perfect for practice and matches.',
                 'price': 2074.17,  # ₹2,074 (converted from $24.99)
                 'category': 'tennis',
-                'image_url': 'https://via.placeholder.com/300x300/3E3F29/FFFFFF?text=Tennis+Balls',
+                'image_url': 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 80
             },
             {
@@ -142,7 +142,7 @@ def seed_database():
                 'description': 'Official tournament grade tennis net with adjustable height and weather-resistant materials.',
                 'price': 7469.17,  # ₹7,469 (converted from $89.99)
                 'category': 'tennis',
-                'image_url': 'https://via.placeholder.com/300x300/3E3F29/FFFFFF?text=Tennis+Net',
+                'image_url': 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 20
             },
             
@@ -152,7 +152,7 @@ def seed_database():
                 'description': 'FIFA approved soccer ball with excellent flight characteristics and durability.',
                 'price': 3817.17,  # ₹3,817 (converted from $45.99)
                 'category': 'soccer',
-                'image_url': 'https://via.placeholder.com/300x300/F1F0E4/000000?text=Soccer+Ball',
+                'image_url': 'https://images.unsplash.com/photo-1614632537190-23e4b21d0381?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 60
             },
             {
@@ -160,7 +160,7 @@ def seed_database():
                 'description': 'Portable soccer goal set perfect for backyard practice. Easy setup and takedown.',
                 'price': 10789.17,  # ₹10,789 (converted from $129.99)
                 'category': 'soccer',
-                'image_url': 'https://via.placeholder.com/300x300/F1F0E4/000000?text=Soccer+Goal',
+                'image_url': 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 25
             },
             {
@@ -168,7 +168,7 @@ def seed_database():
                 'description': 'Professional soccer cleats with superior traction and comfort for optimal field performance.',
                 'price': 9959.17,  # ₹9,959 (converted from $119.99)
                 'category': 'soccer',
-                'image_url': 'https://via.placeholder.com/300x300/F1F0E4/000000?text=Soccer+Cleats',
+                'image_url': 'https://images.unsplash.com/photo-1608245449230-4ac19066d2d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 45
             },
             
@@ -178,7 +178,7 @@ def seed_database():
                 'description': 'Complete adjustable dumbbell set with multiple weight options. Perfect for home workouts.',
                 'price': 33199.17,  # ₹33,199 (converted from $399.99)
                 'category': 'fitness',
-                'image_url': 'https://via.placeholder.com/300x300/7D8D86/FFFFFF?text=Dumbbells',
+                'image_url': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 20
             },
             {
@@ -186,7 +186,7 @@ def seed_database():
                 'description': 'Non-slip premium yoga mat with extra cushioning for comfort during workouts.',
                 'price': 4149.17,  # ₹4,149 (converted from $49.99)
                 'category': 'fitness',
-                'image_url': 'https://via.placeholder.com/300x300/7D8D86/FFFFFF?text=Yoga+Mat',
+                'image_url': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 100
             },
             {
@@ -194,7 +194,7 @@ def seed_database():
                 'description': 'Complete resistance band set with multiple resistance levels and accessories.',
                 'price': 2489.17,  # ₹2,489 (converted from $29.99)
                 'category': 'fitness',
-                'image_url': 'https://via.placeholder.com/300x300/7D8D86/FFFFFF?text=Resistance+Bands',
+                'image_url': 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 75
             },
             
@@ -204,7 +204,7 @@ def seed_database():
                 'description': 'Lightweight running shoes with excellent cushioning and support for long distance running.',
                 'price': 10789.17,  # ₹10,789 (converted from $129.99)
                 'category': 'running',
-                'image_url': 'https://via.placeholder.com/300x300/BCA88D/FFFFFF?text=Running+Shoes',
+                'image_url': 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 60
             },
             {
@@ -212,7 +212,7 @@ def seed_database():
                 'description': 'Advanced fitness tracker with heart rate monitoring, GPS, and smartphone connectivity.',
                 'price': 16599.17,  # ₹16,599 (converted from $199.99)
                 'category': 'running',
-                'image_url': 'https://via.placeholder.com/300x300/BCA88D/FFFFFF?text=Fitness+Tracker',
+                'image_url': 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 35
             },
             
@@ -222,7 +222,7 @@ def seed_database():
                 'description': 'Anti-fog swimming goggles with UV protection and adjustable straps.',
                 'price': 2074.17,  # ₹2,074 (converted from $24.99)
                 'category': 'swimming',
-                'image_url': 'https://via.placeholder.com/300x300/3E3F29/FFFFFF?text=Swimming+Goggles',
+                'image_url': 'https://images.unsplash.com/photo-1530549387789-4c1017266635?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 50
             },
             {
@@ -230,7 +230,7 @@ def seed_database():
                 'description': 'Durable silicone swim cap that provides excellent water protection and comfort.',
                 'price': 1078.17,  # ₹1,078 (converted from $12.99)
                 'category': 'swimming',
-                'image_url': 'https://via.placeholder.com/300x300/3E3F29/FFFFFF?text=Swim+Cap',
+                'image_url': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 80
             },
             
@@ -240,7 +240,7 @@ def seed_database():
                 'description': 'Complete golf club set perfect for beginners. Includes drivers, irons, wedges, and putter.',
                 'price': 41499.17,  # ₹41,499 (converted from $499.99)
                 'category': 'golf',
-                'image_url': 'https://via.placeholder.com/300x300/F1F0E4/000000?text=Golf+Clubs',
+                'image_url': 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 15
             },
             {
@@ -248,7 +248,7 @@ def seed_database():
                 'description': 'Professional grade golf balls with superior distance and control. Pack of 12.',
                 'price': 2904.17,  # ₹2,904 (converted from $34.99)
                 'category': 'golf',
-                'image_url': 'https://via.placeholder.com/300x300/F1F0E4/000000?text=Golf+Balls',
+                'image_url': 'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
                 'stock_quantity': 100
             }
         ]
