@@ -87,15 +87,24 @@
                             </ul>
                         </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main.login') }}">
-                                <i class="fas fa-sign-in-alt me-1"></i>Login
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-sign-in-alt me-1"></i>Sign In
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main.register') }}">
-                                <i class="fas fa-user-plus me-1"></i>Register
-                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('main.login') }}">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                                </a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('main.register') }}">
+                                    <i class="fas fa-user-plus me-2"></i>Create Account
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><h6 class="dropdown-header">New Customer?</h6></li>
+                                <li><small class="dropdown-item-text text-muted px-3">
+                                    Create an account to track orders,<br>
+                                    manage wishlist, and get exclusive offers!
+                                </small></li>
+                            </ul>
                         </li>
                     {% endif %}
                 </ul>

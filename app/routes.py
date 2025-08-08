@@ -425,6 +425,53 @@ def admin_update_order_status(id):
     
     return redirect(url_for('main.admin_orders'))
 
+# User Management Routes
+@main.route('/admin/users')
+@login_required
+def admin_users():
+    if not current_user.is_admin:
+        flash('Access denied', 'danger')
+        return redirect(url_for('main.index'))
+    
+    page = request.args.get('page', 1, type=int)
+    search = request.args.get('search', '', type=str)
+    
+    query = User.query
+    if search:
+        query = query.filter(
+            db.or_(
+                User.username.contains(search),
+                User.email.contains(search)
+            )
+        )
+    
+    users = query.order_by(User.created_at.desc()).paginate(
+        page=page, per_page=10, error_out=False
+    )
+    
+    # Get today's date for statistics
+    from datetime import date
+    today = date.today()
+
+    return render_template('admin/users.html', users=users, search=search, today=today)@main.route('/admin/users/<int:id>/toggle-admin', methods=['POST'])
+@login_required
+def admin_toggle_user_admin(id):
+    if not current_user.is_admin:
+        flash('Access denied', 'danger')
+        return redirect(url_for('main.index'))
+    
+    user = User.query.get_or_404(id)
+    if user.id == current_user.id:
+        flash('You cannot modify your own admin status', 'warning')
+        return redirect(url_for('main.admin_users'))
+    
+    user.is_admin = not user.is_admin
+    db.session.commit()
+    
+    status = 'granted' if user.is_admin else 'revoked'
+    flash(f'Admin privileges {status} for {user.username}', 'success')
+    return redirect(url_for('main.admin_users'))
+
 # Support and Company Pages
 @main.route('/help-center')
 def help_center():
